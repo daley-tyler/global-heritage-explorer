@@ -1,14 +1,12 @@
-#App File
-#App Link: https://statylerdaley.shinyapps.io/UNESCO-Shiny-App/
 library(tidyverse)
 library(sf)
 library(shiny)
 library(leaflet)
 library(shinythemes)
 
+source("R/popups.R", local = TRUE)
 load("unesco_heritage_data.RData")
 
-#Code for layout, tabs, and inputs
 ui <- fluidPage(
   theme = shinytheme("flatly"),
   titlePanel("UNESCO vs Non-UNESCO Heritage Sites"),
@@ -86,8 +84,7 @@ ui <- fluidPage(
   )
 )
 
-# Server code with plots
-server <- function(input, output) {
+server <- function(input, output, session) {
   UNESCO_filtered <- reactive({
     all_sites_df %>%
       filter(
@@ -125,11 +122,9 @@ server <- function(input, output) {
             radius = 6,
             stroke = FALSE,
             fillOpacity = 0.85,
-            popup = paste0(
-              "<b>", uf$name, "</b><br>",
-              "Category: ", uf$category, "<br>",
-              "Country: ", uf$country, "<br>",
-              "(UNESCO Site)"
+            popup = heritage_popup(
+              uf$name, c("Category", "Country"),
+              list(uf$category, uf$country), "UNESCO Site"
             )
           )
       }
@@ -146,11 +141,10 @@ server <- function(input, output) {
             radius = 4,
             stroke = FALSE,
             fillOpacity = 0.7,
-            popup = paste0(
-              "<b>", nf$name, "</b><br>",
-              "Type: ", str_to_title(str_replace_all(nf$type, "_", " ")), "<br>",
-              "Region: ", nf$continent, "<br>",
-              "(Non-UNESCO Site)"
+            popup = heritage_popup(
+              nf$name, c("Type", "Region"),
+              list(str_to_title(str_replace_all(nf$type, "_", " ")), nf$continent),
+              "Non-UNESCO Site"
             )
           )
       }
