@@ -33,7 +33,7 @@ An interactive data-exploration application built with **R Shiny**, **Leaflet**,
 3. Install dependencies:
 
    ```r
-   install.packages(c("shiny", "shinythemes", "leaflet", "tidyverse", "sf"))
+   install.packages(c("shiny", "shinythemes", "leaflet", "tidyverse", "sf", "htmltools"))
    ```
 
 4. Launch the application from the repository root:
@@ -48,17 +48,19 @@ The repository includes `unesco_heritage_data.RData`, which `app.R` loads at sta
 
 ## Validation
 
-From the repository root, check that both R scripts parse:
+From the repository root, run the regression and server smoke checks:
 
 ```sh
-Rscript --vanilla -e 'parse(file = "app.R"); parse(file = "data_prep.R")'
+Rscript --vanilla tests/smoke.R
 ```
 
-Then launch the app and exercise the map layers, region and category filters,
-region/country charts, and both distribution choices. Parsing alone does not
-validate reactive behavior or browser rendering. Map tiles require internet access.
+These check popup HTML escaping with synthetic labels, required data fields,
+coordinate ranges, map filters, both chart summaries and both distributions through
+Shiny's test server. Dataset labels are escaped before entering map popup HTML.
+The checks do not establish source-data accuracy or exercise a browser.
 
-There is currently no committed automated test suite or dependency lockfile.
+Then launch the app and exercise the map layers, filters and charts in a browser.
+Map tiles require internet access. There is no dependency lockfile or hosted CI.
 The package installation command above installs the available package versions;
 it does not recreate a pinned environment.
 
@@ -68,6 +70,8 @@ it does not recreate a pinned environment.
 .
 ├── app.R                       # Shiny user interface and server logic
 ├── data_prep.R                 # Source shapefile processing and normalization
+├── R/popups.R                  # Escaped map popup labels
+├── tests/smoke.R               # Popup, dataset and server checks
 ├── unesco_heritage_data.RData   # Preprocessed datasets used by the app
 └── rsconnect/                  # Deployment metadata
 ```
@@ -116,7 +120,7 @@ This is an **exploratory visualization**, not a complete global census of all he
 ## Future improvements
 
 - Add a documented data-refresh and validation workflow.
-- Add automated checks for missing coordinates, duplicate locations, and classification consistency.
+- Extend data checks to duplicate locations and classification consistency.
 - Add optimized map rendering for large point collections; the interface currently warns that enabling the Asia comparison layer may be slow.
 - Add screenshots and a short walkthrough of the interface.
 
