@@ -1,12 +1,8 @@
 # Global Heritage Explorer
 
-**Explore the geographic distribution of UNESCO World Heritage Sites alongside selected non-UNESCO cultural and heritage points of interest.**
+I built this R Shiny app to explore UNESCO World Heritage records alongside selected regional points of interest. Leaflet displays the sites on a map, and ggplot2 charts show the distribution of the included records. The two datasets cover different places and use different selection criteria, so their counts cannot establish bias in UNESCO designation.
 
-An interactive data-exploration application built with **R Shiny**, **Leaflet**, **ggplot2**, and **sf**. It combines a UNESCO World Heritage dataset with selected regional points-of-interest datasets to make geographic patterns easier to inspect.
-
-**[Open the Shiny app](https://statylerdaley.shinyapps.io/UNESCO-Shiny-App/)** · [View the source code](https://github.com/daley-tyler/global-heritage-explorer)
-
-> The deployed app loaded on 30 October 2026. The Shiny deployment keeps its original URL independently of the GitHub repository name. It still shows the earlier interpretation text; the corrected source in this repository needs a separate deployment. This availability check does not validate every live interaction.
+The [hosted Shiny app](https://statylerdaley.shinyapps.io/UNESCO-Shiny-App/) loaded on 9 November 2026 and still displayed the earlier interpretation about UNESCO selection bias. To use the corrected interpretation and map popup handling, run the source locally using the instructions below.
 
 ## Features
 
